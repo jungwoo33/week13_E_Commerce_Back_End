@@ -1,18 +1,74 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
+// you are in: localhost:3001/api/products/
 // The `/api/products` endpoint
 
 // get all products
+router.get('/', async(req, res) => {
+  // find all products
+  // be sure to include its associated Category and Tag data
+  try {
+    const product_data = await Product.findAll({
+      attributes: ['id','product_name','price','stock'],
+      include: [
+        {
+          model: Category, 
+          attribute:['id','category_name']
+        },
+        {
+          model: Tag, 
+          attributes: ['id','tag_name']
+        }],
+    });
+    
+    res.status(200).json(product_data);
+  } catch(err) {
+    res.status(500).json(err);
+  }
+});
+
+/*
 router.get('/', (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
+  Product.findAll({
+    include: [
+      {
+        model: Category,
+        attributes: ['id', 'category_name']
+      },
+      {
+        model: Tag,
+        attributes: ['id', 'tag_name']
+      }
+    ]
+  })
+    .then(dbProductData => res.json(dbProductData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
+*/
+
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async(req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  try {
+    const product_data = await Product.findByPk(req.params.id,{
+      include: [{model: Category},{model: Tag}],
+    });
+    if(!product_data){
+      res.status(404).json({message: 'No product found with that id!'});
+      return;
+    }
+    res.status(200).json(product_data);
+  } catch(err) {
+    res.status(500).json(err);
+  }
 });
 
 // create new product

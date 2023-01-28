@@ -28,12 +28,19 @@ To use this program, `git clone` the repo down to your local. Then, run `npm ins
 
 ## 5. Usage:
 To use this application, follow the instruction below: 
-+ Run `npm install` on your terminal, then it will install the required `npm` packages.
-+ Let's create the database first - `ecommerce_db`:
++ First, run `npm install` on your terminal, then it will install the required `npm` packages.
++ Second, let's create the database - `ecommerce_db`:
   + `mysql -u root -p`: login to `MySQL` then type the following commends:
-  + `source /db/schema.sql`: this will create `ecommerce_db`
-  + `show databases`: Now, you will see `ecommerce_db` in the `Database` list, but it is empty now.
-  + `exit`
+  + `source ./db/schema.sql;`: this will create `ecommerce_db`
+  + `show databases;`: Now, you will see `ecommerce_db` in the `Database` list
+  + `use ecommerce_db;`: it is empty now.
+  + `exit`: exit the mysql terminal
++ Third, let's include tables in the database we just created, `ecommerce_db`:
+  + `node ./seeds/index.js`: this will insert the following tables in the `ecommerce_db`:
+    + `category`
+    + `product`
+    + `product_tag`
+    + `tag`
 + Now, let's run the program:
   + Set an Environmental Variable in `./.env` file:
     + `touch .env`: this will create `./.env` file
