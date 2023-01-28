@@ -16,18 +16,19 @@ Product.belongsTo(Category, {
 // A.hasMany(B)
 Category.hasMany(Product, {
   foreignKey: 'category_id', // should be defined in "B"
+  onDelete: 'SET NULL',
 });
 
 // Products belongToMany Tags (through ProductTag)
 // A.belongsToMany(B,{through: 'C'})
 Product.belongsToMany(Tag,{
-  through: 'ProductTag',
+  through: ProductTag,
   foreignKey: 'product_id', // with product_id in ProductTag
 });
 
 // Tags belongToMany Products (through ProductTag)
 Tag.belongsToMany(Product,{
-  through: 'ProductTag',
+  through: ProductTag,
   foreignKey: 'tag_id', // with tag_id in ProductTag
 });
 
