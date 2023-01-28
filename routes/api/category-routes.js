@@ -8,6 +8,15 @@ router.get('/', async(req, res) => {
   // be sure to include its associated Products
   try {
     const category_data = await Category.findAll({
+      /* 
+        use "include" with "attributes" when you need to include only specific fields of the included table (here, "Product" table)
+        this is the basic format:
+          foo.findAll({
+            where: where,
+            attribute: attributes,
+            include: [{model: bar, attributes: attributes_array}]
+          })
+      */
       include: {
         model: Product, 
         attributes: ['id', 'product_name', 'price', 'stock', 'category_id'] // include following columns in Product table
@@ -62,16 +71,52 @@ router.get('/:id', async(req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
-  // create a new category
+// create a new category
+router.post('/', async (req, res) => {
+  try{
+    const user_data = await Category.create(req.body);
+    // 200 status code means the request is successful
+    res.status(200).json(user_data);
+  } catch(err) {
+    // 400 status code means the server could not understand the request
+    res.status(400).json(err);
+  }
 });
 
-router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+// update a category by its `id` value
+router.put('/:id', async (req, res) => {
+  try{
+    const user_data = await Category.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    if(!user_data){
+      res.status(404).json({message: 'No category found with that id!'});
+      return;
+    }
+    res.json(user_data);
+  } catch(err){
+    res.json(err);
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+// delete a category by its `id` value
+router.delete('/:id', async (req, res) => {
+  try{
+    const user_data = await Category.destroy({
+      where: {
+        id: req.params.id,
+      },
+    })
+    if(!user_data){
+      res.status(404).json({message: 'No category found with that id!'});
+      return;
+    }
+    res.json(user_data);
+  } catch(err){
+    res.json(err);
+  }
 });
 
 module.exports = router;
