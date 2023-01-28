@@ -18,6 +18,29 @@ router.get('/', async(req, res) => {
     res.status(500).json(err);
   }
 });
+// Note, here, I used (try & catch) to substitute promise()
+// See more tetails in week13-ORM/01-Activities/11-Ins_RESTful-Routes/routes/api/userRoutes.js
+// So, the following will be identical to above:
+/*
+router.get('/', (req, res) => {
+  // find all categories
+  // be sure to include its associated Products
+  Category.findAll({
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      }
+    ]
+  })
+  .then(category_data => res.json(category_data))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
+});
+*/
+
 
 router.get('/:id', async(req, res) => {
   // find one category by its `id` value

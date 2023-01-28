@@ -10,15 +10,19 @@ router.get('/', async(req, res) => {
   // be sure to include its associated Category and Tag data
   try {
     const product_data = await Product.findAll({
-      attributes: ['id','product_name','price','stock'],
+      /*
+        activate the following line if you want to only show these columns from the Product table
+        if it is not activated, result will show every columns from the Product table, i.e., including "category_id"
+      */
+      //attributes: ['id','product_name','price','stock'], 
       include: [
         {
           model: Category, 
-          attribute:['id','category_name']
+          //attribute:['id','category_name'] // I don't need to include this since these are everything in "category" table
         },
         {
           model: Tag, 
-          attributes: ['id','tag_name']
+          //attributes: ['id','tag_name'] // I don't need to include this since these are everything in "tag" table
         }],
     });
     

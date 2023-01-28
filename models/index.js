@@ -11,7 +11,6 @@ Product.belongsTo(Category, {
   foreignKey: 'category_id', // should be defined in "A"
 });
 
-
 // a Category can have multiple Products
 // A.hasMany(B)
 Category.hasMany(Product, {
@@ -31,7 +30,6 @@ Tag.belongsToMany(Product,{
   through: ProductTag,
   foreignKey: 'tag_id', // with tag_id in ProductTag
 });
-
 
 
 module.exports = {
